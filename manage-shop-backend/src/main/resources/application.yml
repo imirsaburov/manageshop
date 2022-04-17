@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: dev
+
+  datasource:
+    initialization-mode: never
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    enabled: true
+    user: ${spring.datasource.username}
+    password: ${spring.datasource.password}
+    url: ${spring.datasource.url}
+    change-log: ./migration/liquibase-changeLog.xml
+
+

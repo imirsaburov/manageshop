@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet
+            id="user_permissions_create"
+            author="imirsaburov">
+
+        <createTable
+                tableName="user_permissions">
+            <column
+                    name="id"
+                    type="BIGINT"
+                    autoIncrement="true">
+                <constraints
+                        primaryKey="true"
+                        nullable="false"/>
+            </column>
+
+            <column
+                    name="created_by"
+                    type="BIGINT"/>
+
+            <column
+                    name="modified_by"
+                    type="BIGINT"/>
+
+            <column
+                    name="created_at"
+                    type="TIMESTAMP"/>
+
+            <column
+                    name="modified_at"
+                    type="TIMESTAMP"/>
+
+            <column
+                    name="deleted"
+                    type="BOOLEAN"
+                    defaultValueBoolean="false"/>
+
+            <column
+                    name="user_id"
+                    type="BIGINT">
+                <constraints
+                        nullable="false"/>
+            </column>
+
+            <column
+                    name="permission_id"
+                    type="BIGINT">
+                <constraints
+                        nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="user_permissions"
+                                 baseColumnNames="created_by"
+                                 constraintName="fk_user_permissions_created_by_users_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="user_permissions"
+                                 baseColumnNames="modified_by"
+                                 constraintName="fk_user_permissions_modified_by_users_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+
+        <addForeignKeyConstraint baseTableName="user_permissions"
+                                 baseColumnNames="user_id"
+                                 constraintName="fk_user_permissions_user_id_users_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="user_permissions"
+                                 baseColumnNames="permission_id"
+                                 constraintName="fk_user_permissions_permission_id_users_id"
+                                 referencedTableName="permissions"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

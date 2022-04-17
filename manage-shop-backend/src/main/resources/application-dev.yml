@@ -1,0 +1,36 @@
+server:
+  port: 7000
+
+spring:
+  datasource:
+    driver-class-name: 'org.postgresql.Driver'
+    username: 'manage_shop'
+    password: 'manage_shop'
+    url: 'jdbc:postgresql://localhost:5432/manage_shop'
+
+
+custom:
+  swagger:
+    url: '127.0.0.1:${server.port}'
+    basePackage: 'uz.imirsaburov.manage.shop'
+    tokenUrl: '/oauth/token'
+    oauth2ClientUsername: 'test'
+    oauth2ClientPassword: 'test'
+  oauth2:
+    client:
+      clientList:
+        - username: 'test'
+          password: 'test'
+          accessTokenValidSeconds: 86400
+          refreshTokenValidSeconds: 100000
+          grantTypes:
+            - 'password'
+            - 'refresh_token'
+          scopes:
+            - 'read'
+            - 'write'
+          resourceIds:
+            - 'api'
+  admin:
+    username: admin
+    password: 123
