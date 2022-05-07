@@ -28,7 +28,7 @@ public class CustomUserDetails extends BaseDTO implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.grantedAuthorities;
     }
 
     public String getPassword() {

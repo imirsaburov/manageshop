@@ -4,13 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import uz.imirsaburov.manage.shop.dto.exception.ErrorResponseDTO;
-import uz.imirsaburov.manage.shop.enums.LocaleEnum;
+import uz.imirsaburov.manage.shop.enums.ExceptionEnum;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @RestControllerAdvice
 @RequiredArgsConstructor
@@ -20,28 +20,43 @@ public class ExceptionAdvice {
 
     @ExceptionHandler(Throwable.class)
     public ResponseEntity<?> ex(Throwable throwable, HttpServletRequest request) {
-        ErrorResponseDTO responseDTO = new ErrorResponseDTO();
-        responseDTO.setStatus(500);
-        responseDTO.setTimeStamp(System.currentTimeMillis());
-        responseDTO.setMessage(throwable.getLocalizedMessage());
-        responseDTO.setError(throwable.getClass().getName());
-        responseDTO.setPath(request.getRequestURI());
+        ExceptionEnum internalServerError = ExceptionEnum.INTERNAL_SERVER_ERROR;
 
-        return ResponseEntity.status(500)
-                .body(responseDTO);
+        ErrorResponseDTO responseDTO = new ErrorResponseDTO();
+        responseDTO.setStatus(internalServerError.getHttpStatus().value());
+        responseDTO.setTimestamp(System.currentTimeMillis());
+        responseDTO.setMessage(messageSource.getMessage(internalServerError.getLocaleCode(), new String[]{throwable.getMessage()}, LocaleContextHolder.getLocale()));
+        responseDTO.setErrorCode(internalServerError.getErrorCode());
+        responseDTO.setPath(request.getRequestURI());
+        return ResponseEntity.status(internalServerError.getHttpStatus()).body(responseDTO);
     }
 
-    @ExceptionHandler(HttpStatusCodeException.class)
-    public ResponseEntity<?> ex(HttpStatusCodeException throwable, HttpServletRequest request) {
-        System.out.println(LocaleContextHolder.getLocale());
+    @ExceptionHandler(BindException.class)
+    public ResponseEntity<?> ex(BindException throwable, HttpServletRequest request) {
+        ExceptionEnum javaxValidation = ExceptionEnum.VALIDATION;
+
         ErrorResponseDTO responseDTO = new ErrorResponseDTO();
-        responseDTO.setStatus(500);
-        responseDTO.setTimeStamp(System.currentTimeMillis());
-        responseDTO.setMessage(messageSource.getMessage(throwable.getLocaleCode(),throwable.getParams(),LocaleContextHolder.getLocale()));
-        responseDTO.setError(throwable.getClass().getSimpleName());
+        responseDTO.setStatus(javaxValidation.getHttpStatus().value());
+        responseDTO.setTimestamp(System.currentTimeMillis());
+        responseDTO.setMessage(throwable.getFieldError().getDefaultMessage());
+        responseDTO.setErrorCode(javaxValidation.getErrorCode());
         responseDTO.setPath(request.getRequestURI());
 
-        return ResponseEntity.status(500)
-                .body(responseDTO);
+        return ResponseEntity.status(javaxValidation.getHttpStatus()).body(responseDTO);
+    }
+
+    @ExceptionHandler(AppException.class)
+    public ResponseEntity<?> ex(AppException throwable, HttpServletRequest request) {
+
+        ExceptionEnum exceptionEnum = throwable.getExceptionEnum();
+
+        ErrorResponseDTO responseDTO = new ErrorResponseDTO();
+        responseDTO.setStatus(exceptionEnum.getHttpStatus().value());
+        responseDTO.setTimestamp(System.currentTimeMillis());
+        responseDTO.setMessage(messageSource.getMessage(exceptionEnum.getLocaleCode(), throwable.getParams(), LocaleContextHolder.getLocale()));
+        responseDTO.setErrorCode(exceptionEnum.getErrorCode());
+        responseDTO.setPath(request.getRequestURI());
+
+        return ResponseEntity.status(exceptionEnum.getHttpStatus()).body(responseDTO);
     }
 }

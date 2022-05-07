@@ -8,8 +8,8 @@ import uz.imirsaburov.manage.shop.base.BaseDTO;
 @Data
 public class ErrorResponseDTO extends BaseDTO {
     private String path;
-    private Long timeStamp;
+    private Long timestamp;
     private String message;
     private Integer status;
-    private String error;
+    private String errorCode;
 }

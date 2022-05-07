@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import uz.imirsaburov.manage.shop.enums.LocaleEnum;
 
 import java.nio.charset.StandardCharsets;
@@ -45,5 +46,12 @@ public class CustomBeans {
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setReuseRefreshToken(false);
         return tokenServices;
+    }
+
+    @Bean
+    public LocalValidatorFactoryBean getValidator() {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+        return bean;
     }
 }

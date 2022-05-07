@@ -8,6 +8,7 @@
     <include file="/migration/logs/1.0.0-users_create.xml"/>
     <include file="/migration/logs/1.0.1-permissions_create.xml"/>
     <include file="/migration/logs/1.0.2-user_permissions_create.xml"/>
+    <include file="/migration/logs/1.0.3-categories_create.xml"/>
 
 
 </databaseChangeLog>

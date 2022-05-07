@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-2.0.xsd">
+
+    <changeSet
+            id="categories_create"
+            author="imirsaburov">
+
+        <createTable
+                tableName="categories">
+            <column
+                    name="id"
+                    type="BIGINT"
+                    autoIncrement="true">
+                <constraints
+                        primaryKey="true"
+                        nullable="false"/>
+            </column>
+
+            <column
+                    name="created_by"
+                    type="BIGINT"/>
+
+            <column
+                    name="modified_by"
+                    type="BIGINT"/>
+
+            <column
+                    name="created_at"
+                    type="TIMESTAMP"/>
+
+            <column
+                    name="modified_at"
+                    type="TIMESTAMP"/>
+
+            <column
+                    name="deleted"
+                    type="BOOLEAN"
+                    defaultValueBoolean="false"/>
+
+            <column
+                    name="name"
+                    type="VARCHAR">
+                <constraints
+                        nullable="false" unique="true"/>
+            </column>
+
+            <column
+                    name="status"
+                    type="BOOLEAN"
+                    defaultValueBoolean="false">
+                <constraints
+                        nullable="false"/>
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="categories"
+                                 baseColumnNames="created_by"
+                                 constraintName="fk_categories_created_by_users_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+        <addForeignKeyConstraint baseTableName="categories"
+                                 baseColumnNames="modified_by"
+                                 constraintName="fk_categories_modified_by_users_id"
+                                 referencedTableName="users"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

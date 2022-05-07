@@ -21,7 +21,13 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/swagger-resources/**", "/swagger-ui/**", "/v2/api-docs", "/v1/user/throw")
+                .antMatchers(
+//                        HttpMethod.GET,
+                        "/swagger-resources/**",
+                        "/swagger-ui/**",
+                        "/v2/api-docs",
+                        "/category",
+                        "/v1/user/throw")
                 .permitAll()
                 .anyRequest()
                 .authenticated();
