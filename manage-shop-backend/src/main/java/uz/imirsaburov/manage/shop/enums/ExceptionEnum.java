@@ -6,14 +6,15 @@ import org.springframework.http.HttpStatus;
 @Getter
 public enum ExceptionEnum {
 
-    // generals
-    INTERNAL_SERVER_ERROR("server.error", HttpStatus.INTERNAL_SERVER_ERROR, "000"),
-    VALIDATION("", HttpStatus.BAD_REQUEST, "001"),
-    //user
-    USERNAME_NOT_FOUND_EXCEPTION("user.username.notfound", HttpStatus.NOT_FOUND, "002"),
+    // generals 000***
+    INTERNAL_SERVER_ERROR("server.error", HttpStatus.INTERNAL_SERVER_ERROR, "0000001"),
+    VALIDATION("", HttpStatus.BAD_REQUEST, "0000002"),
 
-    //category
-    CATEGORY_NOT_FOUND_EXCEPTION("category.notfound", HttpStatus.NOT_FOUND, "003"),
+    //user 002***
+    USERNAME_NOT_FOUND_EXCEPTION("user.username.notfound", HttpStatus.NOT_FOUND, "0020001"),
+
+    //category 003***
+    CATEGORY_NOT_FOUND_EXCEPTION("category.notfound", HttpStatus.NOT_FOUND, "0030001"),
 
     ;
 
