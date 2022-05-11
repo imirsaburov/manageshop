@@ -18,7 +18,7 @@ import java.util.List;
  * @param <V>
  * @param <T>
  */
-public class SpecificationBuilder<V extends AbstractSpecification<T>, T extends BaseEntity> extends SerializableImpl {
+public class SpecificationBuilder<V extends BaseSpecification<T>, T extends BaseEntity> extends SerializableImpl {
 
     private static final Logger logger = LogManager.getLogger("ServiceLogger");
 
@@ -39,7 +39,7 @@ public class SpecificationBuilder<V extends AbstractSpecification<T>, T extends 
      * @param <T> Entity
      * @return Specification builder
      */
-    public static <V extends AbstractSpecification<T>, T extends BaseEntity> SpecificationBuilder<V, T> create(Class<V> v) {
+    public static <V extends BaseSpecification<T>, T extends BaseEntity> SpecificationBuilder<V, T> create(Class<V> v) {
 
         try {
             Constructor<V> constructor = v.getConstructor();
@@ -140,7 +140,7 @@ public class SpecificationBuilder<V extends AbstractSpecification<T>, T extends 
 
     }
 
-    public AbstractSpecification<T> build() {
+    public BaseSpecification<T> build() {
 
         return specification;
     }

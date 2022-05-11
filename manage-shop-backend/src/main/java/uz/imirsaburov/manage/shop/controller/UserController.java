@@ -19,9 +19,9 @@ public class UserController {
 
     @GetMapping("me")
     public MeDTO me() {
-        CustomUserDetails currentUser = CurrentUserUtils.getCurrentUser();
+        String username = CurrentUserUtils.getUsername();
 
-        return userService.getWithMeDTO(currentUser.getUsername());
+        return userService.getWithMeDTO(username);
     }
 
 }

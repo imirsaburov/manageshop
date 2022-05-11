@@ -3,6 +3,7 @@ package uz.imirsaburov.manage.shop.dto.category;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import uz.imirsaburov.manage.shop.base.BaseDTO;
+import uz.imirsaburov.manage.shop.entity.CategoryEntity;
 
 import javax.validation.constraints.Pattern;
 
@@ -12,4 +13,10 @@ public class UpdateCategoryDTO extends BaseDTO {
     @Pattern(regexp = "[A-z]{3,50}", message = "{validation.create.category.name}")
     private String name;
     private Boolean status;
+
+    public static CategoryEntity toEntity(UpdateCategoryDTO dto, CategoryEntity entity) {
+        entity.setName(dto.getName());
+        entity.setStatus(dto.getStatus());
+        return entity;
+    }
 }

@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @param <T>
  */
-public abstract class AbstractSpecification<T extends BaseEntity> extends SerializableImpl implements Specification<T> {
+public abstract class BaseSpecification<T extends BaseEntity> extends SerializableImpl implements Specification<T> {
 
     private final List<SearchCriteria> andCriteriaList;
 
@@ -27,7 +27,7 @@ public abstract class AbstractSpecification<T extends BaseEntity> extends Serial
     /**
      * Override constructor without any changes
      */
-    public AbstractSpecification() {
+    public BaseSpecification() {
         this.customCriteriaList = new ArrayList<>();
         this.andCriteriaList = new ArrayList<>();
         this.orCriteriaList = new ArrayList<>();

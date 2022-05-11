@@ -1,15 +1,17 @@
 package uz.imirsaburov.manage.shop.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import uz.imirsaburov.manage.shop.dto.category.CategoryDTO;
+import uz.imirsaburov.manage.shop.dto.category.CategoryFilter;
 import uz.imirsaburov.manage.shop.dto.category.CreateCategoryDTO;
 import uz.imirsaburov.manage.shop.dto.category.UpdateCategoryDTO;
-import uz.imirsaburov.manage.shop.dto.oauth2.CustomUserDetails;
-import uz.imirsaburov.manage.shop.enums.RoleEnum;
+import uz.imirsaburov.manage.shop.enums.PermissionEnum;
 import uz.imirsaburov.manage.shop.exceptions.category.CategoryNotFoundException;
+import uz.imirsaburov.manage.shop.service.AuthoritySerivce;
 import uz.imirsaburov.manage.shop.service.CategoryService;
 import uz.imirsaburov.manage.shop.util.CurrentUserUtils;
 
@@ -21,6 +23,7 @@ import javax.validation.Valid;
 public class CategoryController {
 
     private final CategoryService service;
+    private final AuthoritySerivce authoritySerivce;
 
     @PreAuthorize("hasAnyAuthority('ADMIN','CATEGORY_CREATE')")
     @PostMapping
@@ -48,10 +51,38 @@ public class CategoryController {
     public ResponseEntity<CategoryDTO> getById(@PathVariable Long id) {
         CategoryDTO categoryDTO = service.getById(id);
 
-        CustomUserDetails currentUser = CurrentUserUtils.getCurrentUser();
-        if (!currentUser.getAuthorities().contains(RoleEnum.ADMIN.name()) && !categoryDTO.getStatus())
+        String username = CurrentUserUtils.getUsername();
+
+        if (!authoritySerivce.checkAdmin(username))
             throw new CategoryNotFoundException(id);
 
+        return ResponseEntity.ok(categoryDTO);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<CategoryDTO>> getList(@Valid CategoryFilter filter) {
+        String username = CurrentUserUtils.getUsername();
+
+        boolean isAdmin = authoritySerivce.checkAdmin(username);
+        if (!isAdmin)
+            filter.setStatus(true);
+
+        if (!isAdmin) {
+            boolean isList = authoritySerivce.checkPermission(username, PermissionEnum.CATEGORY_LIST);
+            if (!isList)
+                filter.setStatus(true);
+        }
+
+        Page<CategoryDTO> categoryDTO = service.getList(filter);
+
+
+        return ResponseEntity.ok(categoryDTO);
+    }
+
+    @PreAuthorize("hasAnyAuthority('ADMIN','CATEGORY_DELETE')")
+    @DeleteMapping("{id}")
+    public ResponseEntity<CategoryDTO> deleteById(@PathVariable Long id) {
+        CategoryDTO categoryDTO = service.delete(id);
         return ResponseEntity.ok(categoryDTO);
     }
 

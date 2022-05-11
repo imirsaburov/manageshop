@@ -17,4 +17,6 @@ public interface CategoryService {
     CategoryDTO changeStatus(Long id, Boolean status);
 
     Page<CategoryDTO> getList(CategoryFilter filter);
+
+    CategoryDTO delete(Long id);
 }

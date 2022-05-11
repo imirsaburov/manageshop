@@ -26,7 +26,6 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                         "/swagger-resources/**",
                         "/swagger-ui/**",
                         "/v2/api-docs",
-                        "/category",
                         "/v1/user/throw")
                 .permitAll()
                 .anyRequest()

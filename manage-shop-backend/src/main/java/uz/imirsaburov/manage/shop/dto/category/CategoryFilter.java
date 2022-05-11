@@ -8,5 +8,5 @@ import uz.imirsaburov.manage.shop.base.BaseFilterPageable;
 @Data
 public class CategoryFilter extends BaseFilterPageable {
     private String name;
-    private String status;
+    private Boolean status;
 }
