@@ -15,7 +15,7 @@ public enum ExceptionEnum {
 
     //category 003***
     CATEGORY_NOT_FOUND_EXCEPTION("category.notfound", HttpStatus.NOT_FOUND, "0030001"),
-    CATEGORY_NAME_ALREADY_EXIST_EXCEPTION("category.notfound", HttpStatus.BAD_REQUEST, "0030001"),
+    CATEGORY_NAME_ALREADY_EXIST_EXCEPTION("category.name.exist", HttpStatus.BAD_REQUEST, "0030001"),
 
     ;
 

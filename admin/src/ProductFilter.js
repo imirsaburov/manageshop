@@ -53,6 +53,7 @@ class ProductFilter extends Component {
                                 // onChange={onGenderChange}
                                 allowClear
                                 mode='multiple'
+
                             >
                                 <Option value="1">S</Option>
                                 <Option value="2">L</Option>

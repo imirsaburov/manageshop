@@ -3,7 +3,7 @@ import {Layout, Menu, Popconfirm} from 'antd';
 import {LogoutOutlined, SkinOutlined, UnorderedListOutlined, UserOutlined} from '@ant-design/icons';
 import {Link, Redirect, Route, Switch, useHistory} from "react-router-dom";
 import {routes} from "./Routs";
-import {userMe} from "./service";
+import {userMe} from "./services/AuthService";
 import Login from "./Login";
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -43,7 +43,7 @@ const SiderDemo = () => {
     }, []);
 
     if (!authorized) {
-        history.push("/login")
+        // history.push("/login")
         return <Login/>
     }
 
@@ -79,7 +79,7 @@ const SiderDemo = () => {
                                         localStorage.removeItem("access_token");
                                         setAuthorized(false);
                                         setCurrentUser(null);
-                                        history.push("/login");
+                                        // history.push("/login");
                                     }} okText="Ha" cancelText="Yo'q">
                             <Link to="/">
                                 Chiqish
@@ -102,10 +102,9 @@ const SiderDemo = () => {
                         <Route path='/' exact render={() => <Redirect to="/product"/>}/>
                         {routes.map(route => {
                             return <Route path={route.path}
-                                          render={() => <route.component/>}
+                                          render={() => <route.component currentUser={currentUser}/>}
                                           key={route.path}/>
                         })}
-                        <Route path='*' exact render={() => <Redirect to="/product"/>}/>
 
                     </Switch>
                 </Content>

@@ -1,10 +1,8 @@
 import React, {Component} from 'react';
 import {Button, Checkbox, Image, Popconfirm, Table, Tag} from "antd";
 import ProductFilter from "./ProductFilter";
-import {getMoney, moneyFormatUZS} from "./utils";
+import {moneyFormatUZS} from "./utils";
 import {EditOutlined} from '@ant-design/icons';
-import {login, userMe} from "./service";
-import {Link} from "react-router-dom";
 // import {
 //
 // } from '@ant-design/icons';

@@ -1,5 +1,5 @@
 import axios from "axios";
-import {API_URL, LOGIN_BASIC} from "./Constants";
+import {API_URL} from "../Constants";
 
 export function request(data) {
 
@@ -12,13 +12,15 @@ export function request(data) {
     if (!params)
         params = {};
 
+    headers["Accept-Language"] = 'uz';
+
 
     const accessToken = localStorage.getItem("access_token") || "";
     if (headers["Authorization"] == null && accessToken) {
         headers["Authorization"] = "Bearer " + accessToken;
     }
 
-    let response={};
+    let response = {};
 
     return axios.request({
         method: data.method,
@@ -45,31 +47,7 @@ export function request(data) {
     )
 }
 
-export async function login(data) {
-    data.grant_type = 'password';
-    let res = await request({
-        params: data,
-        method: 'POST',
-        url: API_URL + "/oauth/token",
-        headers: {
-            "Authorization": "Basic " + LOGIN_BASIC
-        }
-    })
-
-    if (res.success) {
-        localStorage.setItem("access_token", res.data.access_token)
-    }
-
-    return res;
+export function requestLocal(data) {
+    data.url = API_URL + data.url;
+    return request(data);
 }
-
-export async function userMe() {
-    return request({
-        method: 'GET',
-        url: API_URL + "/v1/user/me",
-        params: {},
-        headers: {}
-    })
-
-}
-

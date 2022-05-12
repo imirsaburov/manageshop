@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Form, Input} from "antd";
-import {login, userMe} from "./service";
+import {login} from "./services/AuthService";
 import {useHistory} from "react-router-dom";
 
 

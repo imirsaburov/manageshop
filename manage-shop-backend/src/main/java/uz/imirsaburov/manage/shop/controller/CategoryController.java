@@ -18,7 +18,7 @@ import uz.imirsaburov.manage.shop.util.CurrentUserUtils;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("category")
+@RequestMapping("v1/category")
 @RequiredArgsConstructor
 public class CategoryController {
 
