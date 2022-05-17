@@ -37,7 +37,7 @@ const Login = () => {
                     onFinish={onFinish}
                     onFinishFailed={onFinishFailed}
                 >
-                    <p className="form-title">Manage shop</p>
+                    <p className="form-title">Oscar shop</p>
                     <p>Admin panelga kirish</p>
                     <Form.Item
                         name="username"

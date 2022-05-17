@@ -5,12 +5,13 @@ import lombok.EqualsAndHashCode;
 import uz.imirsaburov.manage.shop.base.BaseDTO;
 import uz.imirsaburov.manage.shop.entity.CategoryEntity;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class UpdateCategoryDTO extends BaseDTO {
-    @Pattern(regexp = "[A-z]{3,50}", message = "{validation.create.category.name}")
+    @NotBlank(message = "{validation.create.category.name}")
     private String name;
     private Boolean status;
 

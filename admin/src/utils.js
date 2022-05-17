@@ -17,3 +17,14 @@ export function moneyFormatUZS(item) {
         currency: 'UZS',
     }).toString();
 }
+
+export function filter(filter) {
+    let res = {};
+    Object.keys(filter).forEach(item => {
+        if (filter[item] != null) {
+            res[item] = filter[item];
+            return res;
+        }
+    })
+    return res;
+}

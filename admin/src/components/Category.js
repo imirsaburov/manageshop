@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Image, Table, message, Popconfirm} from "antd";
+import {Button, Checkbox, Col, Image, message, Popconfirm, Row, Table} from "antd";
 import {EditOutlined} from "@ant-design/icons";
-import {categoryList, changeStatusCategory, createCategory, updateCategory} from "./services/CategoryService";
-import CategoryModal from "./components/CategoryModal";
-import {Link} from "react-router-dom";
+import {categoryList, changeStatusCategory, createCategory, updateCategory} from "../services/CategoryService";
+import CategoryModal from "./CategoryModal";
+import CategoryFilter from "./CategoryFilter";
+import {filter} from "../utils";
 // import {
 //
 // } from '@ant-design/icons';
@@ -88,8 +89,7 @@ const Category = ({currentUser}) => {
                                     if (res.success) {
                                         message.info("Status o`zgartirildi")
                                         getList({page: 0, size: 10})
-                                    }
-                                    else message.error(res.data.message)
+                                    } else message.error(res.data.message)
                                 }} okText="Ha" cancelText="Yo'q">
                 <Checkbox checked={item.status}/>
             </Popconfirm>,
@@ -106,6 +106,7 @@ const Category = ({currentUser}) => {
             getList({page: 0, size: 10})
             message.info("Yaratildi");
             setCreatModalIsOpen(false);
+            setCurrent({})
         } else message.error(res.data.message);
     }
 
@@ -116,26 +117,44 @@ const Category = ({currentUser}) => {
             getList({page: 0, size: 10})
             message.info("Taxrirlandi!");
             setUpdateModalIsOpen(false);
+            setCurrent({})
         } else message.error(res.data.message);
     }
 
     return (
         <>
-            <Button onClick={() => setCreatModalIsOpen(true)} type="primary">Qo'shish</Button>
+            <Row>
+                <Col md={1}>
+                    <Button onClick={() => setCreatModalIsOpen(true)} type="primary">Qo'shish</Button>
+                </Col>
+
+
+            </Row>
+            <CategoryFilter
+                onFinished={e => {
+                    getList({...e, page: 0, size: 10})
+                }}
+            />
+
             <div style={{marginBottom: '1rem'}}/>
             <Table bordered dataSource={list} columns={columns}/>
 
             <CategoryModal
                 isOpen={creatModalIsOpen}
                 handleOk={create}
-                handleCancel={() => setCreatModalIsOpen(false)}/>
+                handleCancel={() => {
+                    setCreatModalIsOpen(false)
+                }}/>
 
             <CategoryModal
                 isOpen={updateModalIsOpen}
                 handleOk={update}
                 data={current}
-                handleCancel={() => setUpdateModalIsOpen(false)}/>
-
+                handleCancel={() => {
+                    setUpdateModalIsOpen(false);
+                    setCurrent(null)
+                }}/>
+            }
         </>);
 }
 
