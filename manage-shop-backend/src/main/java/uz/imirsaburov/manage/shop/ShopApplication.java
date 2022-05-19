@@ -14,8 +14,6 @@ public class ShopApplication {
 
     public static void main(String[] args) {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(ShopApplication.class, args);
-
-        applicationContext.getBeanFactory().getBeanNamesIterator().forEachRemaining(System.out::println);
     }
 
 }

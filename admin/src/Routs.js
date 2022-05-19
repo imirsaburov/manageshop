@@ -1,6 +1,7 @@
-import Category from "./components/Category";
+import Category from "./components/category/Category";
 import Product from "./Product";
 import NoComplete from "./NoComplete";
+import User from "./components/user/Moderator";
 
 export const routes = [
     {
@@ -13,6 +14,6 @@ export const routes = [
     },
     {
         path: '/user',
-        component: NoComplete,
+        component: User,
     }
 ];

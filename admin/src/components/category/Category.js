@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Image, message, Popconfirm, Row, Table} from "antd";
 import {EditOutlined} from "@ant-design/icons";
-import {categoryList, changeStatusCategory, createCategory, updateCategory} from "../services/CategoryService";
+import {categoryList, changeStatusCategory, createCategory, updateCategory} from "../../services/CategoryService";
 import CategoryModal from "./CategoryModal";
 import CategoryFilter from "./CategoryFilter";
-import {filter} from "../utils";
+import {filter} from "../../utils";
 // import {
 //
 // } from '@ant-design/icons';
@@ -51,9 +51,10 @@ const columns = [
         align: 'center'
     },
     {
-        title: 'Actions',
+        title: 'Taxrirlash',
         dataIndex: 'action',
         key: 'action',
+        align: 'center',
         width: '8%',
     },
 ];
@@ -132,29 +133,29 @@ const Category = ({currentUser}) => {
             </Row>
             <CategoryFilter
                 onFinished={e => {
-                    getList({...e, page: 0, size: 10})
+                    getList({...filter(e), page: 0, size: 10})
                 }}
             />
 
             <div style={{marginBottom: '1rem'}}/>
             <Table bordered dataSource={list} columns={columns}/>
 
-            <CategoryModal
+            {creatModalIsOpen && <CategoryModal
                 isOpen={creatModalIsOpen}
                 handleOk={create}
                 handleCancel={() => {
                     setCreatModalIsOpen(false)
-                }}/>
+                    setCurrent(null)
+                }}/>}
 
-            <CategoryModal
+            {updateModalIsOpen && <CategoryModal
                 isOpen={updateModalIsOpen}
                 handleOk={update}
                 data={current}
                 handleCancel={() => {
                     setUpdateModalIsOpen(false);
                     setCurrent(null)
-                }}/>
-            }
+                }}/>}
         </>);
 }
 

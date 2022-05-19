@@ -12,4 +12,6 @@ public interface UserRepository extends BaseRepository<UserEntity> {
 
 
     Optional<UserEntity> findByUsernameEqualsIgnoreCase(String username);
+
+    boolean existsByUsernameEqualsIgnoreCase(String username);
 }

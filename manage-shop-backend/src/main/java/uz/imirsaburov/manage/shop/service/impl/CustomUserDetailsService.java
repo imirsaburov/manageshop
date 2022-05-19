@@ -1,4 +1,4 @@
-package uz.imirsaburov.manage.shop.service;
+package uz.imirsaburov.manage.shop.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -7,13 +7,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import uz.imirsaburov.manage.shop.dto.oauth2.CustomUserDetails;
 import uz.imirsaburov.manage.shop.entity.user.UserEntity;
-import uz.imirsaburov.manage.shop.repository.UserPermissionRepository;
+import uz.imirsaburov.manage.shop.service.AuthorityService;
+import uz.imirsaburov.manage.shop.service.UserService;
 
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
     private final UserService userService;
-    private final UserPermissionRepository userPermissionRepository;
+    private final AuthorityService authorityService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -27,7 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         userDetailsDTO.setAccountNonExpired(userEntity.getEnabled());
         userDetailsDTO.setAccountNonLocked(userEntity.getEnabled());
         userDetailsDTO.setCredentialsNonExpired(userEntity.getEnabled());
-        userDetailsDTO.setGrantedAuthorities(userService.getAllAuthorities(username));
+        userDetailsDTO.setGrantedAuthorities(authorityService.getAuthorities(username));
         return userDetailsDTO;
     }
 }

@@ -2,6 +2,7 @@ package uz.imirsaburov.manage.shop.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import uz.imirsaburov.manage.shop.dto.category.CreateCategoryDTO;
 import uz.imirsaburov.manage.shop.dto.category.UpdateCategoryDTO;
 import uz.imirsaburov.manage.shop.enums.PermissionEnum;
 import uz.imirsaburov.manage.shop.exceptions.category.CategoryNotFoundException;
-import uz.imirsaburov.manage.shop.service.AuthoritySerivce;
+import uz.imirsaburov.manage.shop.service.AuthorityService;
 import uz.imirsaburov.manage.shop.service.CategoryService;
 import uz.imirsaburov.manage.shop.util.CurrentUserUtils;
 
@@ -23,13 +24,13 @@ import javax.validation.Valid;
 public class CategoryController {
 
     private final CategoryService service;
-    private final AuthoritySerivce authoritySerivce;
+    private final AuthorityService authorityService;
 
     @PreAuthorize("hasAnyAuthority('ADMIN','CATEGORY_CREATE')")
     @PostMapping
     public ResponseEntity<CategoryDTO> create(@Valid @RequestBody CreateCategoryDTO dto) {
         CategoryDTO categoryDTO = service.create(dto);
-        return ResponseEntity.ok(categoryDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryDTO);
     }
 
 
@@ -53,7 +54,7 @@ public class CategoryController {
 
         String username = CurrentUserUtils.getUsername();
 
-        if (!authoritySerivce.checkAdmin(username))
+        if (!authorityService.checkAdmin(username))
             throw new CategoryNotFoundException(id);
 
         return ResponseEntity.ok(categoryDTO);
@@ -63,12 +64,12 @@ public class CategoryController {
     public ResponseEntity<Page<CategoryDTO>> getList(@Valid CategoryFilter filter) {
         String username = CurrentUserUtils.getUsername();
 
-        boolean isAdmin = authoritySerivce.checkAdmin(username);
+        boolean isAdmin = authorityService.checkAdmin(username);
         if (!isAdmin)
             filter.setStatus(true);
 
         if (!isAdmin) {
-            boolean isList = authoritySerivce.checkPermission(username, PermissionEnum.CATEGORY_LIST);
+            boolean isList = authorityService.checkPermission(username, PermissionEnum.CATEGORY_LIST);
             if (!isList)
                 filter.setStatus(true);
         }

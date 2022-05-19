@@ -12,8 +12,8 @@ function CategoryModal({isOpen, handleOk, handleCancel, data}) {
         >
             <Form layout="vertical" onFinish={handleOk}
                   initialValues={{
-                      ["name"]: data?.name,
-                      ["status"]: data?.status
+                      ["name"]: data?.name || '',
+                      ["status"]: data?.status || ''
                   }}
             >
                 <Form.Item

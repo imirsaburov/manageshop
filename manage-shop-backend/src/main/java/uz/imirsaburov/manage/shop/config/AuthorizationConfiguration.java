@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import uz.imirsaburov.manage.shop.properties.oauth2.OAuth2ClientsProperties;
-import uz.imirsaburov.manage.shop.service.CustomUserDetailsService;
+import uz.imirsaburov.manage.shop.service.impl.CustomUserDetailsService;
 
 @EnableAuthorizationServer
 @Configuration

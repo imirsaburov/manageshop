@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Form, Input} from "antd";
+import {Button, Form, Input, message} from "antd";
 import {login} from "./services/AuthService";
 import {useHistory} from "react-router-dom";
 
@@ -12,7 +12,7 @@ const Login = () => {
         if (loginRes.success) {
             history.push("/product")
             window.location.reload();
-        }
+        }else message.error("Parol noto`g`ri")
     };
 
     const onFinishFailed = errorInfo => {

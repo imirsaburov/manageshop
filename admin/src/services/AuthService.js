@@ -23,7 +23,7 @@ export async function login(data) {
 export async function userMe() {
     return requestLocal({
         method: 'GET',
-        url: "/v1/user/me",
+        url: "/v1/auth/user/me",
         params: {},
         headers: {}
     })
