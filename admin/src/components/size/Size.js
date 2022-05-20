@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Checkbox, Col, Image, message, Popconfirm, Row, Table} from "antd";
 import {EditOutlined} from "@ant-design/icons";
-import {changeStatusCategory, createCategory, listCategory, updateCategory} from "../../services/CategoryService";
-import CategoryModal from "./CategoryModal";
-import CategoryFilter from "./CategoryFilter";
+import {changeStatusSize, createSize, listSize, updateSize} from "../../services/SizeService";
+import SizeModal from "./SizeModal";
+import SizeFilter from "./SizeFilter";
 import {filter} from "../../utils";
 // import {
 //
@@ -60,7 +60,7 @@ const columns = [
 ];
 
 
-const Category = ({currentUser}) => {
+const Size = ({currentUser}) => {
 
     const [list, setList] = useState([])
     const [current, setCurrent] = useState({})
@@ -72,7 +72,7 @@ const Category = ({currentUser}) => {
     }, [])
 
     const getList = async (params) => {
-        let res = await listCategory(params);
+        let res = await listSize(params);
         if (res.success) {
             let list = res.data.content.map((item) => getItem(item))
             setList(list);
@@ -86,7 +86,7 @@ const Category = ({currentUser}) => {
             name: item.name,
             status: <Popconfirm placement="topLeft" title={"Statusni o`zgartirmoqchimisiz ?"}
                                 onConfirm={async () => {
-                                    let res = await changeStatusCategory(item.id, {status: !item.status});
+                                    let res = await changeStatusSize(item.id, {status: !item.status});
                                     if (res.success) {
                                         message.info("Status o`zgartirildi")
                                         getList({page: 0, size: 10})
@@ -102,7 +102,7 @@ const Category = ({currentUser}) => {
         }
     }
     const create = async (e) => {
-        let res = await createCategory(e);
+        let res = await createSize(e);
         if (res.success) {
             getList({page: 0, size: 10})
             message.info("Yaratildi");
@@ -113,7 +113,7 @@ const Category = ({currentUser}) => {
 
     const update = async (e) => {
         e.id = current.id;
-        let res = await updateCategory(e);
+        let res = await updateSize(e);
         if (res.success) {
             getList({page: 0, size: 10})
             message.info("Taxrirlandi!");
@@ -131,7 +131,7 @@ const Category = ({currentUser}) => {
 
 
             </Row>
-            <CategoryFilter
+            <SizeFilter
                 onFinished={e => {
                     getList({...filter(e), page: 0, size: 10})
                 }}
@@ -140,7 +140,7 @@ const Category = ({currentUser}) => {
             <div style={{marginBottom: '1rem'}}/>
             <Table bordered dataSource={list} columns={columns}/>
 
-            {creatModalIsOpen && <CategoryModal
+            {creatModalIsOpen && <SizeModal
                 isOpen={creatModalIsOpen}
                 handleOk={create}
                 handleCancel={() => {
@@ -148,7 +148,7 @@ const Category = ({currentUser}) => {
                     setCurrent(null)
                 }}/>}
 
-            {updateModalIsOpen && <CategoryModal
+            {updateModalIsOpen && <SizeModal
                 isOpen={updateModalIsOpen}
                 handleOk={update}
                 data={current}
@@ -159,6 +159,6 @@ const Category = ({currentUser}) => {
         </>);
 }
 
-Category.propTypes = {};
+Size.propTypes = {};
 
-export default Category;
+export default Size;

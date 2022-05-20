@@ -1,11 +1,9 @@
 package uz.imirsaburov.manage.shop.service.impl;
 
-import liquibase.pro.packaged.E;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import uz.imirsaburov.manage.shop.base.BaseFilter;
 import uz.imirsaburov.manage.shop.base.BaseFilterPageable;
 import uz.imirsaburov.manage.shop.base.BaseSpecification;
 import uz.imirsaburov.manage.shop.dto.category.CategoryDTO;

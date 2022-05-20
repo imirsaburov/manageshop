@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react'
 import {Layout, Menu, Popconfirm} from 'antd';
-import {LogoutOutlined, SkinOutlined, UnorderedListOutlined, UserOutlined} from '@ant-design/icons';
+import {
+    LogoutOutlined,
+    SkinOutlined,
+    UnorderedListOutlined,
+    UserOutlined,
+    OrderedListOutlined
+} from '@ant-design/icons';
 import {Link, Redirect, Route, Switch, useHistory} from "react-router-dom";
 import {routes} from "./Routs";
 import {userMe} from "./services/AuthService";
@@ -20,6 +26,7 @@ function getItem(label, key, icon, children) {
 const items = [
     getItem('Mahsulotlar', '/product', <SkinOutlined/>),
     getItem('Toifalar', '/category', <UnorderedListOutlined/>),
+    getItem('O`lchamlar', '/size', <OrderedListOutlined/>),
     getItem('Foydalanuvchilar', '/user', <UserOutlined/>),
 ];
 

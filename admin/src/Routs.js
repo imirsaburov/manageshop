@@ -2,6 +2,7 @@ import Category from "./components/category/Category";
 import Product from "./Product";
 import NoComplete from "./NoComplete";
 import User from "./components/user/Moderator";
+import Size from "./components/size/Size";
 
 export const routes = [
     {
@@ -15,5 +16,9 @@ export const routes = [
     {
         path: '/user',
         component: User,
+    },
+    {
+        path: '/size',
+        component: Size,
     }
 ];

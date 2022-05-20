@@ -10,6 +10,12 @@ public enum PermissionEnum {
     CATEGORY_UPDATE("it can update category"),
     CATEGORY_CHANGE_STATUS("it can change status of category"),
     CATEGORY_DELETE("it can delete category"),
+
+    SIZE_LIST("get all size"),
+    SIZE_CREATE("it can create size"),
+    SIZE_UPDATE("it can update size"),
+    SIZE_CHANGE_STATUS("it can change status of size"),
+    SIZE_DELETE("it can delete size"),
     ;
     private final String description;
 

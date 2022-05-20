@@ -21,6 +21,10 @@ public enum ExceptionEnum {
     CATEGORY_NOT_FOUND_EXCEPTION("category.notfound", HttpStatus.NOT_FOUND, "0030001"),
     CATEGORY_NAME_ALREADY_EXIST_EXCEPTION("category.name.exist", HttpStatus.BAD_REQUEST, "0030001"),
 
+    //category 004***
+    SIZE_NOT_FOUND_EXCEPTION("size.notfound", HttpStatus.NOT_FOUND, "0040001"),
+    SIZE_NAME_ALREADY_EXIST_EXCEPTION("size.name.exist", HttpStatus.BAD_REQUEST, "0040001"),
+
     ;
 
     private final String localeCode;

@@ -2,7 +2,7 @@ import React from 'react';
 import {Button, Col, Form, Input, Row, Select} from "antd";
 import {Option} from "antd/es/mentions";
 
-const CategoryFilter = ({onFinished, clear}) => {
+const SizeFilter = ({onFinished, clear}) => {
     const [form] = Form.useForm();
 
     return (<Form
@@ -46,4 +46,4 @@ const CategoryFilter = ({onFinished, clear}) => {
     </Form>);
 }
 
-export default CategoryFilter;
+export default SizeFilter;

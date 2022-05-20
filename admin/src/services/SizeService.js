@@ -1,8 +1,8 @@
 import {requestLocal} from "./RequestService";
 
-const basePath = "/v1/category"
+const basePath = "/v1/size"
 
-export async function listCategory(params) {
+export async function listSize(params) {
     return await requestLocal({
         method: 'GET',
         url: basePath,
@@ -11,7 +11,7 @@ export async function listCategory(params) {
 
 }
 
-export async function createCategory(data) {
+export async function createSize(data) {
     return await requestLocal({
         method: 'POST',
         url: basePath,
@@ -21,7 +21,7 @@ export async function createCategory(data) {
 }
 
 
-export async function updateCategory(data) {
+export async function updateSize(data) {
     return await requestLocal({
         method: 'PUT',
         url: basePath + '/' + data.id,
@@ -30,7 +30,7 @@ export async function updateCategory(data) {
 
 }
 
-export async function changeStatusCategory(id, param) {
+export async function changeStatusSize(id, param) {
     return await requestLocal({
         method: 'PATCH',
         url: basePath + '/status/' + id,
