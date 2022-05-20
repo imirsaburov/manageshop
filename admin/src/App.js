@@ -5,6 +5,7 @@ import {
     SkinOutlined,
     UnorderedListOutlined,
     UserOutlined,
+    AppstoreOutlined,
     OrderedListOutlined
 } from '@ant-design/icons';
 import {Link, Redirect, Route, Switch, useHistory} from "react-router-dom";
@@ -25,7 +26,7 @@ function getItem(label, key, icon, children) {
 
 const items = [
     getItem('Mahsulotlar', '/product', <SkinOutlined/>),
-    getItem('Toifalar', '/category', <UnorderedListOutlined/>),
+    getItem('Toifalar', '/category', <AppstoreOutlined/>),
     getItem('O`lchamlar', '/size', <OrderedListOutlined/>),
     getItem('Foydalanuvchilar', '/user', <UserOutlined/>),
 ];
