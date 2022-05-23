@@ -1,19 +1,19 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Checkbox, Col, Image, message, Popconfirm, Row, Table} from "antd";
+import {Button, Checkbox, Col, message, Popconfirm, Row, Table} from "antd";
 import {EditOutlined, KeyOutlined} from "@ant-design/icons";
 import {
     changeModeratorPassword,
-    changePassword,
     changeStatusModerator,
     createModerator,
+    listModerator,
     updateModerator
 } from "../../services/ModeratorService";
-import {filter} from "../../utils";
-import {listModerator} from "../../services/ModeratorService";
-import ProductFilter from "../../ProductFilter";
+import {filter, getJsonFromLocalStorage, setJsonToLocalStorage} from "../../utils";
 import ModeratorFilter from "./ModeratorFilter";
 import ModeratorModal from "./ModeratorModal";
 import ModeratorChangePasswordModal from "./ModeratorChangePasswordModal";
+import {PAGE_SIZE} from "../../Constants";
+import CustomPagenation from "../custom/CustomPagenation";
 
 const columns = [
     {
@@ -67,20 +67,46 @@ const User = ({currentUser}) => {
     const [list, setList] = useState([])
     const [current, setCurrent] = useState({})
     const [creatModalIsOpen, setCreatModalIsOpen] = useState(false)
+    const [totalElements, setTotalElements] = useState(0);
     const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false)
     const [passwordModalIsOpen, setPasswordModalIsOpen] = useState(false)
 
     useEffect(() => {
-        getList({page: 0, size: 10})
+        getList(getPage())
     }, [])
 
-    const getList = async (params) => {
+    const getList = async (page) => {
+        let params = {page: page, ...getFilterProperties()}
+        params.size = PAGE_SIZE;
         let res = await listModerator(params);
         if (res.success) {
+            setTotalElements(res.data.totalElements)
+            setPage(res.data.number)
             let list = res.data.content.map((item) => getItem(item))
             setList(list);
         }
     }
+    const onChangePage = page => {
+        setPage(page);
+        getList(page);
+    };
+
+    const getFilterProperties = () => {
+        return getJsonFromLocalStorage("moderatorFilter");
+    }
+
+    const setFilterProperties = (obj) => {
+        setJsonToLocalStorage("moderatorFilter", filter(obj));
+    }
+
+    const getPage = () => {
+        return getJsonFromLocalStorage("moderatorPage");
+    }
+
+    const setPage = (page) => {
+        setJsonToLocalStorage("moderatorPage", page);
+    }
+
 
     const getItem = (item) => {
         return {
@@ -94,7 +120,7 @@ const User = ({currentUser}) => {
                                      let res = await changeStatusModerator(item.id, {status: !item.enabled});
                                      if (res.success) {
                                          message.info("Status o`zgartirildi")
-                                         getList({page: 0, size: 10})
+                                         getList(getPage())
                                      } else message.error(res.data.message)
                                  }} okText="Ha" cancelText="Yo'q">
                 <Checkbox checked={item.enabled}/>
@@ -116,7 +142,7 @@ const User = ({currentUser}) => {
     const create = async (e) => {
         let res = await createModerator(e);
         if (res.success) {
-            getList({page: 0, size: 10})
+            getList(getPage())
             message.info("Yaratildi");
             setCreatModalIsOpen(false);
             setCurrent({})
@@ -127,7 +153,7 @@ const User = ({currentUser}) => {
         e.id = current.id;
         let res = await updateModerator(e);
         if (res.success) {
-            getList({page: 0, size: 10})
+            getList(getPage())
             message.info("Taxrirlandi!");
             setUpdateModalIsOpen(false);
             setCurrent({})
@@ -138,7 +164,7 @@ const User = ({currentUser}) => {
         e.id = current.id;
         let res = await changeModeratorPassword(e);
         if (res.success) {
-            getList({page: 0, size: 10})
+            getList(getPage())
             message.info("Taxrirlandi!");
             setPasswordModalIsOpen(false);
             setCurrent(null)
@@ -155,14 +181,17 @@ const User = ({currentUser}) => {
 
             </Row>
             <ModeratorFilter
+                params={getFilterProperties()}
                 onFinished={e => {
-                    getList({...filter(e), page: 0, size: 10})
+                    setFilterProperties(e);
+                    setPage(0)
+                    getList(getPage());
                 }}
             />
 
             <div style={{marginBottom: '1rem'}}/>
-            <Table bordered dataSource={list} columns={columns}/>
-
+            <Table pagination={false} bordered dataSource={list} columns={columns}/>
+            <CustomPagenation current={getPage()} totalItems={totalElements} onChange={onChangePage}/>
             {creatModalIsOpen && <ModeratorModal
                 isOpen={creatModalIsOpen}
                 handleOk={create}

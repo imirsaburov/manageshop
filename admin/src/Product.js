@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Checkbox, Image, Popconfirm, Table, Tag} from "antd";
+import {Button, Checkbox, Col, Image, Popconfirm, Row, Table, Tag} from "antd";
 import ProductFilter from "./ProductFilter";
 import {moneyFormatUZS} from "./utils";
 import {EditOutlined} from '@ant-design/icons';
@@ -20,13 +20,27 @@ const dataSource = [
             src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTW-qwrd18SVecNJqPU-5aVgp6b-HSW9xfSjg&usqp=CAU"
         />,
         count: <>
-            <span><Tag color="blue">S</Tag> : 2 </span>&emsp;&emsp;
-            <span><Tag color="blue">S</Tag> : 2 </span><br/>
-            <span><Tag color="blue">S</Tag> : 2 </span>&emsp;&emsp;
-            <span><Tag color="blue">S</Tag> : 2 </span><br/>
-            <span><Tag color="blue">S</Tag> : 2 </span>&emsp;&emsp;
-            <span><Tag color="blue">S</Tag> : 2 </span><br/> <span><Tag color="blue">S</Tag> : 2 </span>&emsp;&emsp;
-            <span><Tag color="blue">S</Tag> : 2 </span><br/>
+            <Row style={{width: "100%"}}>
+                <Col offset={1} style={{marginTop: "10px", marginBottom: "10px"}}>
+                    <span><Tag color="blue">L</Tag> : 2 </span>
+                </Col>
+                <Col offset={1} style={{margin: "10px auto"}}>
+                    <span><Tag color="blue">XL</Tag> : 2 </span>
+                </Col>
+                <Col offset={1} style={{margin: "10px auto"}}>
+                    <span><Tag color="blue">2XL</Tag> : 2 </span>
+                </Col>
+                <Col offset={1} style={{margin: "10px auto"}}>
+                    <span><Tag color="blue">3XL</Tag> : 2 </span>
+                </Col>
+                <Col offset={1} style={{margin: "10px auto"}}>
+                    <span><Tag color="blue">4XL</Tag> : 2 </span>
+                </Col>
+                <Col offset={1} style={{margin: "10px auto"}}>
+                    <span><Tag color="blue">5XL</Tag> : 2 </span>
+                </Col>
+
+            </Row>
         </>,
         status: <Popconfirm placement="topLeft" title={"Status o'zgarsinmi?"}
                             onConfirm={() => console.log()} okText="Ha" cancelText="Yo'q">
@@ -101,7 +115,7 @@ class Product extends Component {
         return (
             <>
                 <ProductFilter/>
-                <Table bordered dataSource={dataSource} columns={columns}/>
+                <Table bordered pagination={false} dataSource={dataSource} columns={columns}/>
             </>
         );
     }

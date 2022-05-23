@@ -28,3 +28,12 @@ export function filter(filter) {
     })
     return res;
 }
+
+
+export function getJsonFromLocalStorage(name) {
+    return JSON.parse(localStorage.getItem(name));
+}
+
+export function setJsonToLocalStorage(name, obj) {
+    return localStorage.setItem(name, JSON.stringify(obj));
+}

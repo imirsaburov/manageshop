@@ -2,13 +2,13 @@ import React from 'react';
 import {Button, Col, Form, Input, Row, Select} from "antd";
 import {Option} from "antd/es/mentions";
 
-const ProductFilter = ({onFinished, clear}) => {
+const ProductFilter = ({onFinished, params}) => {
     const [form] = Form.useForm();
 
     return (<Form
         name="productFilter"
         form={form}
-        initialValues={{remember: true}}
+        initialValues={params}
         onFinish={onFinished}
         // onFinishFailed={this.onFinishFailed}
         autoComplete="off">

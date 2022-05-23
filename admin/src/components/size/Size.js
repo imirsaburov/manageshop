@@ -4,7 +4,10 @@ import {EditOutlined} from "@ant-design/icons";
 import {changeStatusSize, createSize, listSize, updateSize} from "../../services/SizeService";
 import SizeModal from "./SizeModal";
 import SizeFilter from "./SizeFilter";
-import {filter} from "../../utils";
+import {filter, getJsonFromLocalStorage, setJsonToLocalStorage} from "../../utils";
+import {PAGE_SIZE} from "../../Constants";
+import {listModerator} from "../../services/ModeratorService";
+import CustomPagenation from "../custom/CustomPagenation";
 // import {
 //
 // } from '@ant-design/icons';
@@ -66,18 +69,45 @@ const Size = ({currentUser}) => {
     const [current, setCurrent] = useState({})
     const [creatModalIsOpen, setCreatModalIsOpen] = useState(false)
     const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false)
+    const [totalElements, setTotalElements] = useState(0);
 
     useEffect(() => {
-        getList({page: 0, size: 10})
+        getList(getPage())
     }, [])
 
-    const getList = async (params) => {
+    const getList = async (page) => {
+        let params = {page: page, ...getFilterProperties()}
+        params.size = PAGE_SIZE;
         let res = await listSize(params);
         if (res.success) {
+            setTotalElements(res.data.totalElements)
+            setPage(res.data.number)
             let list = res.data.content.map((item) => getItem(item))
             setList(list);
         }
     }
+
+    const onChangePage = page => {
+        setPage(page);
+        getList(page);
+    };
+
+    const getFilterProperties = () => {
+        return getJsonFromLocalStorage("sizeFilter");
+    }
+
+    const setFilterProperties = (obj) => {
+        setJsonToLocalStorage("sizeFilter", filter(obj));
+    }
+
+    const getPage = () => {
+        return getJsonFromLocalStorage("sizePage");
+    }
+
+    const setPage = (page) => {
+        setJsonToLocalStorage("sizePage", page);
+    }
+
 
     const getItem = (item) => {
         return {
@@ -89,7 +119,7 @@ const Size = ({currentUser}) => {
                                     let res = await changeStatusSize(item.id, {status: !item.status});
                                     if (res.success) {
                                         message.info("Status o`zgartirildi")
-                                        getList({page: 0, size: 10})
+                                        getList(getPage())
                                     } else message.error(res.data.message)
                                 }} okText="Ha" cancelText="Yo'q">
                 <Checkbox checked={item.status}/>
@@ -104,7 +134,7 @@ const Size = ({currentUser}) => {
     const create = async (e) => {
         let res = await createSize(e);
         if (res.success) {
-            getList({page: 0, size: 10})
+            getList(getPage())
             message.info("Yaratildi");
             setCreatModalIsOpen(false);
             setCurrent({})
@@ -115,7 +145,7 @@ const Size = ({currentUser}) => {
         e.id = current.id;
         let res = await updateSize(e);
         if (res.success) {
-            getList({page: 0, size: 10})
+            getList(getPage())
             message.info("Taxrirlandi!");
             setUpdateModalIsOpen(false);
             setCurrent({})
@@ -132,14 +162,17 @@ const Size = ({currentUser}) => {
 
             </Row>
             <SizeFilter
+                params={getFilterProperties()}
                 onFinished={e => {
-                    getList({...filter(e), page: 0, size: 10})
+                    setFilterProperties(e);
+                    setPage(0);
+                    getList(getPage());
                 }}
             />
 
             <div style={{marginBottom: '1rem'}}/>
-            <Table bordered dataSource={list} columns={columns}/>
-
+            <Table bordered pagination={false} dataSource={list} columns={columns}/>
+            <CustomPagenation current={getPage()} totalItems={totalElements} onChange={onChangePage}/>
             {creatModalIsOpen && <SizeModal
                 isOpen={creatModalIsOpen}
                 handleOk={create}

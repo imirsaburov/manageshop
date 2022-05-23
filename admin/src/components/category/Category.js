@@ -4,7 +4,10 @@ import {EditOutlined} from "@ant-design/icons";
 import {changeStatusCategory, createCategory, listCategory, updateCategory} from "../../services/CategoryService";
 import CategoryModal from "./CategoryModal";
 import CategoryFilter from "./CategoryFilter";
-import {filter} from "../../utils";
+import {filter, getJsonFromLocalStorage, setJsonToLocalStorage} from "../../utils";
+import {PAGE_SIZE} from "../../Constants";
+import {listModerator} from "../../services/ModeratorService";
+import CustomPagenation from "../custom/CustomPagenation";
 // import {
 //
 // } from '@ant-design/icons';
@@ -66,17 +69,43 @@ const Category = ({currentUser}) => {
     const [current, setCurrent] = useState({})
     const [creatModalIsOpen, setCreatModalIsOpen] = useState(false)
     const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false)
+    const [totalElements, setTotalElements] = useState(0);
 
     useEffect(() => {
-        getList({page: 0, size: 10})
+        getList(getPage())
     }, [])
 
-    const getList = async (params) => {
+    const getList = async (page) => {
+        let params = {page: page, ...getFilterProperties()}
+        params.size = PAGE_SIZE;
         let res = await listCategory(params);
         if (res.success) {
+            setTotalElements(res.data.totalElements)
+            setPage(res.data.number)
             let list = res.data.content.map((item) => getItem(item))
             setList(list);
         }
+    }
+
+    const onChangePage = page => {
+        setPage(page);
+        getList(page);
+    };
+
+    const getFilterProperties = () => {
+        return getJsonFromLocalStorage("categoryFilter");
+    }
+
+    const setFilterProperties = (obj) => {
+        setJsonToLocalStorage("categoryFilter", filter(obj));
+    }
+
+    const getPage = () => {
+        return getJsonFromLocalStorage("categoryPage");
+    }
+
+    const setPage = (page) => {
+        setJsonToLocalStorage("categoryPage", page);
     }
 
     const getItem = (item) => {
@@ -89,7 +118,7 @@ const Category = ({currentUser}) => {
                                     let res = await changeStatusCategory(item.id, {status: !item.status});
                                     if (res.success) {
                                         message.info("Status o`zgartirildi")
-                                        getList({page: 0, size: 10})
+                                        getList(getPage())
                                     } else message.error(res.data.message)
                                 }} okText="Ha" cancelText="Yo'q">
                 <Checkbox checked={item.status}/>
@@ -104,7 +133,7 @@ const Category = ({currentUser}) => {
     const create = async (e) => {
         let res = await createCategory(e);
         if (res.success) {
-            getList({page: 0, size: 10})
+            getList(getPage())
             message.info("Yaratildi");
             setCreatModalIsOpen(false);
             setCurrent({})
@@ -115,7 +144,7 @@ const Category = ({currentUser}) => {
         e.id = current.id;
         let res = await updateCategory(e);
         if (res.success) {
-            getList({page: 0, size: 10})
+            getList(getPage())
             message.info("Taxrirlandi!");
             setUpdateModalIsOpen(false);
             setCurrent({})
@@ -132,14 +161,17 @@ const Category = ({currentUser}) => {
 
             </Row>
             <CategoryFilter
+                params={getFilterProperties()}
                 onFinished={e => {
-                    getList({...filter(e), page: 0, size: 10})
+                    setFilterProperties(e);
+                    setPage(0)
+                    getList(getPage());
                 }}
             />
 
             <div style={{marginBottom: '1rem'}}/>
-            <Table bordered dataSource={list} columns={columns}/>
-
+            <Table bordered dataSource={list} columns={columns} pagination={false}/>
+            <CustomPagenation current={getPage()} totalItems={totalElements} onChange={onChangePage}/>
             {creatModalIsOpen && <CategoryModal
                 isOpen={creatModalIsOpen}
                 handleOk={create}
