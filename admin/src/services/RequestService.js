@@ -33,6 +33,7 @@ export function request(data) {
             success: true,
             data: res.data,
             statusCode: res.status,
+            headers:res.headers,
             statusText: res.statusText
         }
     }).catch(err => {
@@ -40,6 +41,7 @@ export function request(data) {
             return {
                 success: false,
                 data: res.data,
+                headers:res.headers,
                 statusCode: res.status,
                 statusText: res.statusText
             }

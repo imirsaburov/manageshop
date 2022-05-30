@@ -25,8 +25,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 //                        HttpMethod.GET,
                         "/swagger-resources/**",
                         "/swagger-ui/**",
-                        "/v2/api-docs",
-                        "/v1/user/throw")
+                        "/v2/api-docs")
+                .permitAll()
+                .antMatchers(HttpMethod.GET, "/v1/file/*")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

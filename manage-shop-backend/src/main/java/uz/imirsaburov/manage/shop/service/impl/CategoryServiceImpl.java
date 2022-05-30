@@ -82,6 +82,11 @@ public class CategoryServiceImpl implements CategoryService {
         return dto;
     }
 
+    @Override
+    public boolean exist(Long id) {
+        return repository.existsById(id);
+    }
+
     protected CategoryEntity get(Long id) {
         return repository.findById(id).orElseThrow(() -> new CategoryNotFoundException(id));
     }

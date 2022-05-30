@@ -25,6 +25,10 @@ public enum ExceptionEnum {
     SIZE_NOT_FOUND_EXCEPTION("size.notfound", HttpStatus.NOT_FOUND, "0040001"),
     SIZE_NAME_ALREADY_EXIST_EXCEPTION("size.name.exist", HttpStatus.BAD_REQUEST, "0040001"),
 
+
+    //product 005***
+    PRODUCT_NOT_FOUND_EXCEPTION("product.notfound", HttpStatus.NOT_FOUND, "0050001"),
+
     ;
 
     private final String localeCode;

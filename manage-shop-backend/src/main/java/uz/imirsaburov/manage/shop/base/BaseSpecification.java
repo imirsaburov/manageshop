@@ -18,6 +18,8 @@ public abstract class BaseSpecification<T extends BaseEntity> extends Serializab
 
     private final List<SearchCriteria> andCriteriaList;
 
+    private Boolean deleted = false;
+
     private final List<SearchCriteria> orCriteriaList;
 
     private final List<SearchCriteria> customCriteriaList;
@@ -42,6 +44,8 @@ public abstract class BaseSpecification<T extends BaseEntity> extends Serializab
         List<Predicate> predicatesForFilter = new ArrayList<>();
 
         query.distinct(isQueryDistinct());
+
+        predicatesForFilter.add(criteriaBuilder.equal(root.get("deleted").as(Boolean.class), deleted));
 
         if (orderCriteriaList.size() > 0)
             query.orderBy(toOrderBy(root, orderCriteriaList));
@@ -271,15 +275,19 @@ public abstract class BaseSpecification<T extends BaseEntity> extends Serializab
 
     }
 
+    protected final void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+
     public List<SearchCriteria> getAndCriteriaList() {
         return andCriteriaList;
     }
 
-    public static Collection<?> getCollection(Object o) {
+    protected static Collection<?> getCollection(Object o) {
         return (Collection<?>) o;
     }
 
-    public static String getLikePattern(Object o) {
+    protected static String getLikePattern(Object o) {
         return "%" + o.toString().toLowerCase() + "%";
     }
 }

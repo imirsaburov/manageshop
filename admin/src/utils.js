@@ -37,3 +37,19 @@ export function getJsonFromLocalStorage(name) {
 export function setJsonToLocalStorage(name, obj) {
     return localStorage.setItem(name, JSON.stringify(obj));
 }
+
+export function getStatusProduct(status) {
+    switch (status) {
+        case "ACTIVE":
+            return "Aktiv"
+        case "INACTIVE":
+            return "Aktiv emas"
+    }
+}
+
+
+export function determineProductStatus(status) {
+   if ('ACTIVE'===status)
+       return 'INACTIVE';
+   return 'ACTIVE';
+}

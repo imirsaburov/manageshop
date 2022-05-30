@@ -1,5 +1,5 @@
 import Category from "./components/category/Category";
-import Product from "./Product";
+import Product from "./components/product/Product";
 import NoComplete from "./NoComplete";
 import User from "./components/user/Moderator";
 import Size from "./components/size/Size";

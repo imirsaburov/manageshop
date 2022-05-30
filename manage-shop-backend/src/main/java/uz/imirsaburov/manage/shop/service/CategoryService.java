@@ -19,4 +19,6 @@ public interface CategoryService {
     Page<CategoryDTO> getList(CategoryFilter filter);
 
     CategoryDTO delete(Long id);
+
+    boolean exist(Long id);
 }

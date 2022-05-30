@@ -16,7 +16,6 @@ import javax.persistence.*;
 @ToString
 @Entity
 @Table(name = "user_permissions")
-@Where(clause = " deleted = 'false' ")
 public class UserPermissionEntity extends BaseEntity {
 
     @Column(name = "user_id", nullable = false)

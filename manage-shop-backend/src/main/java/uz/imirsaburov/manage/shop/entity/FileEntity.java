@@ -15,7 +15,6 @@ import javax.persistence.Entity;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "files")
-@Where(clause = " deleted = 'false' ")
 public class FileEntity extends BaseEntity {
 
     @Column(name = "name", nullable = false)

@@ -190,7 +190,4 @@ const Category = ({currentUser}) => {
                 }}/>}
         </>);
 }
-
-Category.propTypes = {};
-
 export default Category;

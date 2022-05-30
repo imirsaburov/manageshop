@@ -16,6 +16,12 @@ public enum PermissionEnum {
     SIZE_UPDATE("it can update size"),
     SIZE_CHANGE_STATUS("it can change status of size"),
     SIZE_DELETE("it can delete size"),
+
+    PRODUCT_LIST("get all product"),
+    PRODUCT_CREATE("it can create product"),
+    PRODUCT_UPDATE("it can update product"),
+    PRODUCT_CHANGE_STATUS("it can change status of product"),
+    PRODUCT_DELETE("it can delete product"),
     ;
     private final String description;
 

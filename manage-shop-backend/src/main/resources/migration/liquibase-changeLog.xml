@@ -11,6 +11,8 @@
     <include file="/migration/logs/1.0.3-categories_create.xml"/>
     <include file="/migration/logs/1.0.4-sizes_create.xml"/>
     <include file="/migration/logs/1.0.5-files_create.xml"/>
+    <include file="/migration/logs/1.0.6-products_create.xml"/>
+    <include file="/migration/logs/1.0.7-product_sizes_create.xml"/>
 
 
 </databaseChangeLog>
