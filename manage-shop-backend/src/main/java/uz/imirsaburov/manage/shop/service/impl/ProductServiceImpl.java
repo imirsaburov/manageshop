@@ -1,6 +1,6 @@
 package uz.imirsaburov.manage.shop.service.impl;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,23 @@ import uz.imirsaburov.manage.shop.exceptions.product.ProductNotFoundException;
 import uz.imirsaburov.manage.shop.repository.ProductRepository;
 import uz.imirsaburov.manage.shop.service.CategoryService;
 import uz.imirsaburov.manage.shop.service.ProductService;
+import uz.imirsaburov.manage.shop.service.ProductSizeService;
 import uz.imirsaburov.manage.shop.specification.ProductSpecification;
 
+import java.util.Collections;
+
 @Service
-@RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository repository;
     private final CategoryService categoryService;
+    private final ProductSizeService productSizeService;
+
+    public ProductServiceImpl(ProductRepository repository, CategoryService categoryService,@Lazy ProductSizeService productSizeService) {
+        this.repository = repository;
+        this.categoryService = categoryService;
+        this.productSizeService = productSizeService;
+    }
 
     @Override
     public ProductDTO create(CreateProductDTO dto) {
@@ -34,7 +43,7 @@ public class ProductServiceImpl implements ProductService {
 
         repository.saveAndFlush(entity);
 
-        return ProductDTO.toDTO(get(entity.getId()));
+        return ProductDTO.toDTO(get(entity.getId()), Collections.emptyList());
     }
 
     @Override
@@ -46,13 +55,13 @@ public class ProductServiceImpl implements ProductService {
         UpdateProductDTO.toEntity(dto, entity);
         repository.save(entity);
 
-        return ProductDTO.toDTO(get(entity.getId()));
+        return ProductDTO.toDTO(get(entity.getId()), productSizeService.getListByProduct(id));
     }
 
     @Override
     public ProductDTO getById(Long id) {
         ProductEntity entity = get(id);
-        return ProductDTO.toDTO(entity);
+        return ProductDTO.toDTO(get(entity.getId()), productSizeService.getListByProduct(id));
     }
 
     @Override
@@ -62,7 +71,7 @@ public class ProductServiceImpl implements ProductService {
         entity.setStatus(status);
         repository.save(entity);
 
-        return ProductDTO.toDTO(entity);
+        return ProductDTO.toDTO(get(entity.getId()), productSizeService.getListByProduct(id));
     }
 
     @Override
@@ -72,13 +81,13 @@ public class ProductServiceImpl implements ProductService {
 
         Page<ProductEntity> page = repository.findAll(all, pageAble);
 
-        return ProductDTO.toDTO(page);
+        return page.map(e -> ProductDTO.toDTO(e, productSizeService.getListByProduct(e.getId())));
     }
 
     @Override
     public ProductDTO delete(Long id) {
         ProductEntity entity = get(id);
-        ProductDTO dto = ProductDTO.toDTO(entity);
+        ProductDTO dto = ProductDTO.toDTO(get(entity.getId()), productSizeService.getListByProduct(id));
         repository.delete(entity);
 
         return dto;

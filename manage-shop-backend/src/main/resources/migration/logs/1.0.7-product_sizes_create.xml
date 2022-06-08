@@ -81,13 +81,13 @@
         <addForeignKeyConstraint baseTableName="product_sizes"
                                  baseColumnNames="product_id"
                                  constraintName="fk_product_sizes_product_id_users_id"
-                                 referencedTableName="users"
+                                 referencedTableName="products"
                                  referencedColumnNames="id"/>
 
         <addForeignKeyConstraint baseTableName="product_sizes"
                                  baseColumnNames="size_id"
                                  constraintName="fk_product_sizes_size_id_users_id"
-                                 referencedTableName="permissions"
+                                 referencedTableName="sizes"
                                  referencedColumnNames="id"/>
 
     </changeSet>

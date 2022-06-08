@@ -78,7 +78,7 @@ const ProductFilter = ({onFinished, params, categoryList}) => {
                         allowClear
                     >
                         <Option value="ACTIVE">Aktiv</Option>
-                        <Option value="INACTIVE">Aktive emas</Option>
+                        <Option value="INACTIVE">Aktiv emas</Option>
                     </Select>
                 </Form.Item>
             </Col>

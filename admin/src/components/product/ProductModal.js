@@ -4,7 +4,7 @@ import {Option} from "antd/es/mentions";
 import {FILE_URL} from "../../Constants";
 import {getPhoto, uploadPhoto} from "../../services/FileService";
 
-function ProductModal({isOpen, handleOk, handleCancel, data, categoryList, imageId, setImageId,params}) {
+function ProductModal({isOpen, handleOk, handleCancel, data, categoryList, imageId, setImageId}) {
     return (
         <Drawer
             title="Mahsulot qo`shish"
@@ -21,7 +21,7 @@ function ProductModal({isOpen, handleOk, handleCancel, data, categoryList, image
 
                         name="image"
                         label="Rasmi"
-                        rules={[{required: imageId==null, message: 'Iltimos rasmni kiriting'}]}
+                        rules={[{required: imageId == null, message: 'Iltimos rasmni kiriting'}]}
                     >
                         <Input type="file" onChange={(e) => {
                             uploadPhoto(e.target.files[0]).then(e => {
@@ -91,8 +91,8 @@ function ProductModal({isOpen, handleOk, handleCancel, data, categoryList, image
                         placeholder="Statusni tanlang"
                         allowClear
                     >
-                            <Option value="ACTIVE">Aktiv</Option>
-                            <Option value="INACTIVE">Aktiv emas</Option>
+                        <Option value="ACTIVE">Aktiv</Option>
+                        <Option value="INACTIVE">Aktiv emas</Option>
                     </Select>
                 </Form.Item>
 

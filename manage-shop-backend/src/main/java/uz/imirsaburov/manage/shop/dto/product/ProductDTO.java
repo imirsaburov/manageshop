@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import uz.imirsaburov.manage.shop.base.BaseDTO;
+import uz.imirsaburov.manage.shop.dto.product.productSize.ProductSizeDTO;
 import uz.imirsaburov.manage.shop.entity.product.ProductEntity;
 
 import java.util.List;
@@ -31,7 +32,9 @@ public class ProductDTO extends BaseDTO {
 
     private ProductEntity.STATUS status;
 
-    public static ProductDTO toDTO(ProductEntity entity) {
+    private List<ProductSizeDTO> productSizeList;
+
+    public static ProductDTO toDTO(ProductEntity entity, List<ProductSizeDTO> productSizeList) {
         ProductDTO dto = new ProductDTO();
         dto.setStatus(entity.getStatus());
         dto.setId(entity.getId());
@@ -45,18 +48,19 @@ public class ProductDTO extends BaseDTO {
         dto.setIncomingPrice(entity.getIncomingPrice());
         dto.setMinSellPrice(entity.getMinSellPrice());
         dto.setSellPrice(entity.getSellPrice());
+        dto.setProductSizeList(productSizeList);
 
         return dto;
     }
-
-    public static List<ProductDTO> toDTO(List<ProductEntity> list) {
-        return list
-                .stream()
-                .map(ProductDTO::toDTO)
-                .collect(Collectors.toList());
-    }
-
-    public static Page<ProductDTO> toDTO(Page<ProductEntity> page) {
-        return new PageImpl<>(toDTO(page.getContent()), page.getPageable(), page.getTotalElements());
-    }
+//
+//    public static List<ProductDTO> toDTO(List<ProductEntity> list) {
+//        return list
+//                .stream()
+//                .map(ProductDTO::toDTO)
+//                .collect(Collectors.toList());
+//    }
+//
+//    public static Page<ProductDTO> toDTO(Page<ProductEntity> page) {
+//        return new PageImpl<>(toDTO(page.getContent()), page.getPageable(), page.getTotalElements());
+//    }
 }

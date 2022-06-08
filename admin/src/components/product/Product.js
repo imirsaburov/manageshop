@@ -15,6 +15,10 @@ import {changeStatusCategory, createCategory, listCategory, updateCategory} from
 import CustomPagenation from "../custom/CustomPagenation";
 import ProductModal from "./ProductModal";
 import {changeStatusProduct, createProduct, listProduct, updateProduct} from "../../services/ProductService";
+import ProductSizeModal from "./productSize/ProductSizeModal";
+import {listSize} from "../../services/SizeService";
+import {ProductSizeComponent} from "./productSize/ProductSizeComponent";
+import {createProductSizeService, updateProductSizeService} from "../../services/ProductSizeService";
 // import {
 //
 // } from '@ant-design/icons';
@@ -67,7 +71,15 @@ const columns = [
         title: 'Soni',
         dataIndex: 'count',
         key: 'count',
-        width: '12%',
+        width: '20%',
+        render(text, record) {
+            return {
+                props: {
+                    style: {}
+                },
+                children: <div>{text}</div>
+            };
+        },
     },
     {
         title: 'Status',
@@ -81,7 +93,7 @@ const columns = [
         dataIndex: 'action',
         align: 'center',
         key: 'action',
-        width: '15%',
+        width: '10%',
     },
 ];
 
@@ -90,10 +102,15 @@ const Product = ({currentUser}) => {
 
 
     const [list, setList] = useState([])
+    const [selectProductList, setSelectProductList] = useState([])
+    const [selectSizeList, setSelectSizeList] = useState([])
     const [current, setCurrent] = useState({})
+    const [currentProductSize, setCurrentProductSize] = useState({})
     const [categoryList, setCategoryList] = useState([])
     const [creatModalIsOpen, setCreatModalIsOpen] = useState(false)
     const [updateModalIsOpen, setUpdateModalIsOpen] = useState(false)
+    const [creatProductSizeModalIsOpen, setCreatProductSizeModalIsOpen] = useState(false)
+    const [updateProductSizeModalIsOpen, setUpdateProductSizeModalIsOpen] = useState(false)
     const [totalElements, setTotalElements] = useState(0);
     const [imageId, setImageId] = useState(null);
 
@@ -135,6 +152,13 @@ const Product = ({currentUser}) => {
         setJsonToLocalStorage("productPage", page);
     }
 
+    const openEditProductSizeModal = (product, item) => {
+        setUpdateProductSizeModalIsOpen(true);
+        setCurrent(product);
+        setCurrentProductSize(item);
+        getSizeListForSelect();
+    }
+
     const getItem = (item) => {
         return {
             key: item.id,
@@ -146,8 +170,11 @@ const Product = ({currentUser}) => {
             sellPrice: item.sellPrice,
             minSellPrice: item.minSellPrice,
             incomingPrice: item.incomingPrice,
+            count: <ProductSizeComponent product={item} editOpenFunction={openEditProductSizeModal} editFunction={updateProductSize}
+                                         itemList={item.productSizeList}/>,
             status: getStatusProduct(item.status),
             action: <>
+                {/*<Button.Group size={"small"}>*/}
                 <Popconfirm placement="topLeft" title={"Statusni o`zgartirmoqchimisiz ?"}
                             onConfirm={async () => {
                                 let res = await changeStatusProduct(item.id, {status: determineProductStatus(item.status)});
@@ -156,18 +183,30 @@ const Product = ({currentUser}) => {
                                     getList(getPage())
                                 } else message.error(res.data.message)
                             }} okText="Ha" cancelText="Yo'q">
-                    <Button>Statusni o`zgartrish</Button>
+                    <Button size={"small"}>Statusni o`zgartrish</Button>
                 </Popconfirm>
 
 
-                <Button onClick={() => {
+                <Button size={"small"} onClick={() => {
                     setCurrent(item);
                     setImageId(item.imageId)
                     setUpdateModalIsOpen(true)
                 }
-                }><EditOutlined/></Button></>
+                }>Tahrirlash</Button>
+
+                <Button size={"small"} onClick={() => {
+                    setCurrent(item);
+                    getSizeListForSelect();
+                    setCreatProductSizeModalIsOpen(true)
+                }
+                }>O`lcham qo`shish</Button>
+                {/*</Button.Group>*/}
+
+            </>
+
         }
     }
+
     const create = async (e) => {
         e.imageId = imageId;
         let res = await createProduct(e);
@@ -193,6 +232,30 @@ const Product = ({currentUser}) => {
         } else message.error(res.data.message);
     }
 
+    const createProductSize = async (e) => {
+        e.productId = current.id;
+        let res = await createProductSizeService(e);
+        if (res.success) {
+            getList(getPage())
+            message.info("Yaratildi");
+            setCreatProductSizeModalIsOpen(false);
+            setCurrent({})
+        } else message.error(res.data.message);
+    }
+
+    const updateProductSize = async (e) => {
+        e.productId = current.id;
+        e.id = currentProductSize.id;
+        let res = await updateProductSizeService(e);
+        if (res.success) {
+            getList(getPage())
+            message.info("Tahrirlandi");
+            setUpdateProductSizeModalIsOpen(false);
+            setCurrent({})
+            setCurrentProductSize({})
+        } else message.error(res.data.message);
+    }
+
     const getCategory = () => {
         listCategory({status: true, page: 0, size: 1000}).then(res => {
             if (res.success) {
@@ -201,6 +264,14 @@ const Product = ({currentUser}) => {
                 setCategoryList(list);
             }
         });
+    }
+
+    const getSizeListForSelect = () => {
+        listSize({page: 0, size: 10000, status: true}).then(e => {
+            if (e.success) {
+                setSelectSizeList(e.data.content);
+            }
+        })
     }
 
     return (
@@ -246,6 +317,30 @@ const Product = ({currentUser}) => {
                     setUpdateModalIsOpen(false);
                     setCurrent(null)
                 }}/>}
+
+            {creatProductSizeModalIsOpen && <ProductSizeModal
+                isOpen={creatProductSizeModalIsOpen}
+                // productList={selectProductList}
+                sizeList={selectSizeList}
+                handleOk={createProductSize}
+                handleCancel={() => {
+                    setCreatProductSizeModalIsOpen(false)
+                    setCurrentProductSize({})
+                    setCurrent({})
+                }}/>}
+
+            {updateProductSizeModalIsOpen && <ProductSizeModal
+                isOpen={updateProductSizeModalIsOpen}
+                // productList={selectProductList}
+                sizeList={selectSizeList}
+                data={currentProductSize}
+                handleOk={updateProductSize}
+                handleCancel={() => {
+                    setUpdateProductSizeModalIsOpen(false)
+                    setCurrentProductSize({})
+                    setCurrent({})
+                }}/>}
+
         </>
     );
 

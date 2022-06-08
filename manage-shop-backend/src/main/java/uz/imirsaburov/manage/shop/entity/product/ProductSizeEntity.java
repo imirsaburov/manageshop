@@ -20,14 +20,14 @@ public class ProductSizeEntity extends BaseEntity {
     @Column(name = "product_id", nullable = false)
     private Long productId;
 
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "product_id", nullable = false, referencedColumnName = "id", insertable = false, updatable = false)
     private ProductEntity productEntity;
 
     @Column(name = "size_id", nullable = false)
     private Long sizeId;
 
-    @ManyToOne(optional = false, fetch = FetchType.EAGER)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "size_id", nullable = false, referencedColumnName = "id", insertable = false, updatable = false)
     private SizeEntity sizeEntity;
 
@@ -35,5 +35,5 @@ public class ProductSizeEntity extends BaseEntity {
     private Long count;
 
     @Column(name = "sold_count")
-    private Long soldCount;
+    private Long soldCount=0L;
 }
