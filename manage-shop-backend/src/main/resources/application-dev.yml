@@ -1,12 +1,12 @@
 server:
-  port: 7000
+  port: 7001
 
 spring:
   datasource:
     driver-class-name: 'org.postgresql.Driver'
     username: 'manage_shop'
     password: 'manage_shop'
-    url: 'jdbc:postgresql://localhost:5432/manage_shop'
+    url: 'jdbc:postgresql://127.0.0.1:5454/manage_shop'
 
 
 custom:

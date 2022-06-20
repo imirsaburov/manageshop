@@ -25,4 +25,6 @@ public interface ProductSizeService {
     List<ProductSizeDTO> getListByProduct(Long productId);
 
     boolean exist(Long id);
+
+    ProductSizeDTO incrementSoldCount(Long id, int soldCount);
 }

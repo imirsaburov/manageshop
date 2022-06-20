@@ -13,8 +13,9 @@ import uz.imirsaburov.manage.shop.dto.product.productSize.ProductSizeFilter;
 import uz.imirsaburov.manage.shop.dto.product.productSize.UpdateProductSizeDTO;
 import uz.imirsaburov.manage.shop.dto.size.SizeDTO;
 import uz.imirsaburov.manage.shop.entity.product.ProductSizeEntity;
-import uz.imirsaburov.manage.shop.exceptions.productSize.ProductSizeExistException;
-import uz.imirsaburov.manage.shop.exceptions.productSize.ProductSizeNotFoundException;
+import uz.imirsaburov.manage.shop.exceptions.product.size.ProductSizeCountInsufficientException;
+import uz.imirsaburov.manage.shop.exceptions.product.size.ProductSizeExistException;
+import uz.imirsaburov.manage.shop.exceptions.product.size.ProductSizeNotFoundException;
 import uz.imirsaburov.manage.shop.repository.ProductSizeRepository;
 import uz.imirsaburov.manage.shop.service.ProductService;
 import uz.imirsaburov.manage.shop.service.ProductSizeService;
@@ -113,6 +114,21 @@ public class ProductSizeServiceImpl implements ProductSizeService {
     @Override
     public boolean exist(Long id) {
         return repository.existsById(id);
+    }
+
+    @Override
+    public ProductSizeDTO incrementSoldCount(Long id, int soldCount) {
+        ProductSizeEntity entity = get(id);
+
+        if (entity.getCount()<soldCount)
+            throw new ProductSizeCountInsufficientException();
+
+        entity.setCount(entity.getCount()-soldCount);
+        entity.setSoldCount(entity.getSoldCount()+soldCount);
+
+        repository.save(entity);
+
+        return ProductSizeDTO.toDTO(entity);
     }
 
     protected ProductSizeEntity get(Long id) {

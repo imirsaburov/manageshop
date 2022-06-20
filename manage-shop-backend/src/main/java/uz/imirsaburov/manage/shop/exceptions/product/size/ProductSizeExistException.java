@@ -1,4 +1,4 @@
-package uz.imirsaburov.manage.shop.exceptions.productSize;
+package uz.imirsaburov.manage.shop.exceptions.product.size;
 
 import uz.imirsaburov.manage.shop.enums.ExceptionEnum;
 import uz.imirsaburov.manage.shop.exceptions.AppException;

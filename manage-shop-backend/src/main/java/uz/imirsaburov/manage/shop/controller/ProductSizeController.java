@@ -10,7 +10,7 @@ import uz.imirsaburov.manage.shop.dto.product.productSize.CreateProductSizeDTO;
 import uz.imirsaburov.manage.shop.dto.product.productSize.ProductSizeDTO;
 import uz.imirsaburov.manage.shop.dto.product.productSize.ProductSizeFilter;
 import uz.imirsaburov.manage.shop.dto.product.productSize.UpdateProductSizeDTO;
-import uz.imirsaburov.manage.shop.exceptions.productSize.ProductSizeNotFoundException;
+import uz.imirsaburov.manage.shop.exceptions.product.size.ProductSizeNotFoundException;
 import uz.imirsaburov.manage.shop.service.AuthorityService;
 import uz.imirsaburov.manage.shop.service.ProductSizeService;
 import uz.imirsaburov.manage.shop.util.CurrentUserUtils;

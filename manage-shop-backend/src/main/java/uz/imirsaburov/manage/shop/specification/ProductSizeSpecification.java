@@ -6,7 +6,7 @@ import uz.imirsaburov.manage.shop.base.SearchCriteria;
 import uz.imirsaburov.manage.shop.base.SpecificationBuilder;
 import uz.imirsaburov.manage.shop.dto.product.productSize.ProductSizeFilter;
 import uz.imirsaburov.manage.shop.entity.product.ProductSizeEntity;
-import uz.imirsaburov.manage.shop.exceptions.productSize.ProductSizeNotFoundException;
+import uz.imirsaburov.manage.shop.exceptions.product.size.ProductSizeNotFoundException;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

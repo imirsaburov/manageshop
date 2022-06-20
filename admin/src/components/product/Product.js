@@ -170,7 +170,8 @@ const Product = ({currentUser}) => {
             sellPrice: item.sellPrice,
             minSellPrice: item.minSellPrice,
             incomingPrice: item.incomingPrice,
-            count: <ProductSizeComponent product={item} editOpenFunction={openEditProductSizeModal} editFunction={updateProductSize}
+            count: <ProductSizeComponent product={item} editOpenFunction={openEditProductSizeModal}
+                                         editFunction={updateProductSize}
                                          itemList={item.productSizeList}/>,
             status: getStatusProduct(item.status),
             action: <>

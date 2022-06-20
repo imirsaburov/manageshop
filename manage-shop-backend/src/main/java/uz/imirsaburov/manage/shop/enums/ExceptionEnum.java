@@ -32,7 +32,13 @@ public enum ExceptionEnum {
 
     //product 006***
     PRODUCT_SIZE_NOT_FOUND_EXCEPTION("product.size.notfound", HttpStatus.NOT_FOUND, "0060001"),
-    PRODUCT_SIZE_EXIST_EXCEPTION("product.size.exist", HttpStatus.NOT_FOUND, "0060001"),
+    PRODUCT_SIZE_EXIST_EXCEPTION("product.size.exist", HttpStatus.NOT_FOUND, "0060002"),
+    PRODUCT_SIZE_INSUFFICIENT_EXCEPTION("product.size.count.insufficient", HttpStatus.BAD_REQUEST, "0060003"),
+
+    //product 007***
+    SOLD_PRODUCT_NOT_FOUND_EXCEPTION("product.sold.notfound", HttpStatus.NOT_FOUND, "0070001"),
+
+
 
     ;
 
